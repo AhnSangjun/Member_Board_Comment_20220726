@@ -1,2 +1,12 @@
-package com.its.member_board_comment.controller;public class HomeController {
+package com.its.member_board_comment.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class HomeController {
+    @GetMapping("/")
+    public String index() {
+        return "index";
+    }
 }

@@ -1,10 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 </head>
 <body>
-$END$
+    <h2>save.html</h2>
+    <form action="/member/save" method="post">
+        이메일: <input type="text" name="memberEmail" id="memberEmail" placeholder="이메일을 입력해 주세요"> <button type="button" onclick="emailDuplicate()">중복확인</button> <br>
+        <span id="email-dup-result"></span>
+        비밀번호: <input type="password" name="memberPassword" onblur="passwordCheck()" id="memberPassword" placeholder="비밀번호를 입력해 주세요"> <br>
+        비밀번호재확인: <input type="password" name="memberPassword2"> <br>
+        이름: <input type="text" name="memberName"> <br>
+        나이: <input type="text" name="memberAge"> <br>
+        전화번호: <input type="text" name="memberMobile"> <br>
+        프로필: <input type="file" name="memberProfile"> <br>
+        <input type="submit" value="회원가입">
+        <input type="reset" value="다시입력">
+    </form>
 </body>
+<script th:inline="javascript">
+    const emailDuplicate = () => {
+        const email = document.getElementById("memberEmail").value;
+        const checkResult = document.getElementById("email-dup-result");
+        $.ajax({
+            type: "post",
+            url: "/member/emailCheck",
+            dataType: "text",
+            data: {
+                "memberEmail": email
+            },
+            success: function (result) {
+                if (result == "ok") {
+                    checkResult.innerHTML = "사용가능한 이메일입니다.";
+                    checkResult.style.color = "green";
+                } else {
+                    checkResult.innerHTML = "이미 사용중인 이메일이거나 탈퇴한 회원입니다.";
+                    checkResult.style.color = "red";
+                }
+            },
+            error: function () {
+                alert("ajax 실패");
+            }
+        });
+    }
+
+    const passwordCheck = () => {
+      const password = document.getElementById("memberPassword").value;
+      $.ajax({
+          type:
+      })
+    }
+</script>
 </html>
