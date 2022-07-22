@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
 </head>
 <body>
     <h2>save.html</h2>
     <form action="/member/save" method="post">
         이메일: <input type="text" name="memberEmail" id="memberEmail" placeholder="이메일을 입력해 주세요"> <button type="button" onclick="emailDuplicate()">중복확인</button> <br>
         <span id="email-dup-result"></span>
-        비밀번호: <input type="password" name="memberPassword" onblur="passwordCheck()" id="memberPassword" placeholder="비밀번호를 입력해 주세요"> <br>
-        비밀번호재확인: <input type="password" name="memberPassword2"> <br>
+        비밀번호: <input type="password" name="memberPassword" id="memberPassword" maxlength="20" onblur="passwordCheck()" required="required" placeholder="비밀번호를 입력해 주세요"> <br>
+        <span id="password-check-result"></span>
+        비밀번호재확인: <input type="password" name="memberPassword2" id="memberPassword2" maxlength="20" onblur="passwordCheck2()" required="required" placeholder="비밀번호를 한번 더 입력해 주세요"> <br>
+        <span id="password-check-result2"></span>
         이름: <input type="text" name="memberName"> <br>
         나이: <input type="text" name="memberAge"> <br>
         전화번호: <input type="text" name="memberMobile"> <br>
@@ -47,10 +50,53 @@
     }
 
     const passwordCheck = () => {
-      const password = document.getElementById("memberPassword").value;
+        const password = document.getElementById("memberPassword").value;
+        const checkResult = document.getElementById("password-check-result");
+        $.ajax({
+            type: "post",
+            url: "/member/passwordCheck",
+            datatype: "text",
+            data: {
+                "memberPassword": password
+            },
+            success: function (result) {
+                if (result == "ok") {
+                    checkResult.innerHTML = "비밀번호가 일치합니다.";
+                    checkResult.style.color = "green";
+                } else {
+                    checkResult.innerHTML = "8~16자 대 소문자 특수 문자를 사용하세요.";
+                    checkResult.style.color = "red";
+                }
+            },
+            error: function () {
+                alert("ajax 실패");
+            }
+        });
+    }
+    
+    const passwordCheck2 = () => {
+      const password2 = document.getElementById("memberPassword2").value;
+      const checkResult = document.getElementById("password-check-result2");
       $.ajax({
-          type:
-      })
+          type: "post",
+          url: "/member/passwordCheck2",
+          dataType: "text",
+          data: {
+              "memberPassword2": password2
+          },
+          success: function (result) {
+              if (result == "ok") {
+                  checkResult.innerHTML = "일치합니다.";
+                  checkResult.style.color = "green";
+              } else {
+                  checkResult.innerHTML = "비밀번호를 한번 더 확인해주세요.";
+                  checkResult.style.color = "red";
+              }
+          },
+          error: function () {
+              alert("ajax 실패");
+          }
+      });
     }
 </script>
 </html>
