@@ -1,7 +1,6 @@
 package com.its.member_board_comment;
 
 import com.its.member_board_comment.dto.MemberDTO;
-import com.its.member_board_comment.entity.MemberEntity;
 import com.its.member_board_comment.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -15,9 +15,12 @@
         <span id="password-check-result"></span>
         비밀번호재확인: <input type="password" name="memberPassword2" id="memberPassword2" maxlength="20" onblur="passwordCheck2()" required="required" placeholder="비밀번호를 한번 더 입력해 주세요"> <br>
         <span id="password-check-result2"></span>
-        이름: <input type="text" name="memberName"> <br>
-        나이: <input type="text" name="memberAge"> <br>
-        전화번호: <input type="text" name="memberMobile"> <br>
+        이름: <input type="text" name="memberName" id="memberName" maxlength="20" required="required" placeholder="이름을 입력해 주세요"> <button type="button" onclick="nameCheck()">중복확인</button> <br>
+        <span id="name-check-result"></span>
+        나이: <input type="text" name="memberAge" id="memberAge" onblur="ageCheck()" placeholder="나이를 입력해 주세요"> <br>
+        <span id="age-check-result"></span>
+        전화번호: <input type="text" name="memberMobile" id="memberMobile" onblur="mobileCheck()" placeholder="전화번호를 입력해 주세요"> <br>
+        <span id="mobile-check-result"></span>
         프로필: <input type="file" name="memberProfile"> <br>
         <input type="submit" value="회원가입">
         <input type="reset" value="다시입력">
@@ -90,6 +93,81 @@
                   checkResult.style.color = "green";
               } else {
                   checkResult.innerHTML = "비밀번호를 한번 더 확인해주세요.";
+                  checkResult.style.color = "red";
+              }
+          },
+          error: function () {
+              alert("ajax 실패");
+          }
+      });
+    }
+    
+    const nameCheck = () => {
+      const name = document.getElementById("memberName").value;
+      const checkResult = document.getElementById("name-check-result");
+      $.ajax({
+          type : "post",
+          url: "/member/nameCheck",
+          datatype: "text",
+          data: {
+              "memberName": name
+          },
+          success: function (result) {
+              if (result == "ok") {
+                  checkResult.innerHTML = "멋진 이름이네요!";
+                  checkResult.style.color = "green";
+              } else {
+                  checkResult.innerHTML = "2~6자 공백없이 입력해주세요.";
+                  checkResult.style.color = "red";
+              }
+          },
+         error: function () {
+              alert("ajax 실패");
+         }
+      });
+    }
+    
+    const ageCheck = () => {
+      const age = document.getElementById("memberAge").value;
+      const checkResult = document.getElementById("age-check-result");
+      $.ajax({
+          type: "post",
+          url: "/member/ageCheck",
+          dataType: "text",
+          data: {
+              "memberAge": age
+          },
+          success: function (result) {
+              if (result == "ok") {
+                  checkResult.innerHTML = "나이가 확인 되었습니다.";
+                  checkResult.style.color = "green";
+              } else {
+                  checkResult.innerHTML = "만 14세 미만은 보호자의 동의가 필요합니다.";
+                  checkResult.style.color = "red";
+              }
+          },
+          error: function () {
+              alert("ajax 실패");
+          }
+      });
+    }
+
+    const mobileCheck = () => {
+      const mobile = document.getElementById("memberMobile").value;
+      const checkResult = document.getElementById("mobile-check-result");
+      $.ajax({
+          type: "post",
+          url: "/member/mobileCheck",
+          dataType: "text",
+          data: {
+              "memberMobile": mobile
+          },
+          success: function (result) {
+              if (result == "ok") {
+                  checkResult.innerHTML = "번호가 확인되었습니다.";
+                  checkResult.style.color = "green";
+              } else {
+                  checkResult.innerHTML = "이미 가입된 번호 입니다.";
                   checkResult.style.color = "red";
               }
           },
